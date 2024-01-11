@@ -1,3 +1,3 @@
 #!/bin/sh
 
-yarn run typeorm:run && yarn run start:dev
+npm run typeorm:run && npm run start:dev
