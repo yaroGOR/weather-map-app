@@ -1,0 +1,62 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Development.Dockerfile
+
+    image: "weather-map-app"
+
+    container_name: weather-map-app
+
+    depends_on:
+      - db
+
+    env_file:
+      - .env
+
+    environment:
+      HOST: "0.0.0.0"
+      DB_HOST: "db"
+      DB_PORT: 5432
+
+    ports:
+      - "${PORT}:${PORT}"
+
+    networks:
+      - db-network
+
+    volumes:
+      - ./src:/opt/app/src
+
+  db:
+    build:
+      context: docker/db/
+
+    container_name: weather-map-app-db-local
+
+    image: weather-map-app-db-local
+
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_LOCAL_MASTER_PASS}
+
+    env_file:
+      - .env
+
+    networks:
+      - db-network
+
+    # For debugging purpose
+    ports:
+      - "${DB_PORT}:5432"
+
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+networks:
+  db-network:
+    driver: bridge
+
+volumes:
+  db-data:
