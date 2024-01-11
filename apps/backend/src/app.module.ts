@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   controllers: [],
   imports: [
+    
     ConfigModule.forRoot({ isGlobal: true }),
     LoggerModule.forRoot(loggerOptions),
     TypeOrmModule.forRoot(dataSource.options),
